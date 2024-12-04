@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_brown">#4B2E39</color>
+    <color name="cream_white">#FDF3E1</color>
+    <color name="autumn_orange">#B97C4B</color>
+    <color name="maple_red">#D4573D</color>
+    <color name="light_autumn_red">#E29578</color>
+    <color name="autumn_brown">#5E4C4A</color>
+    <color name="soft_brown">#7D645C</color>
+    <color name="beige_warm">#D4A373</color>
+    <color name="pale_gold">#F2C57C</color>
+</resources>
