@@ -31,6 +31,9 @@
         android:theme="@style/Theme.CapstoneProject"
         tools:targetApi="31">
         <activity
+            android:name=".ui.HistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.DashboardActivity"
             android:exported="false" />
         <activity
