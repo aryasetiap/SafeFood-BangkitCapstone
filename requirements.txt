@@ -1,0 +1,7 @@
+# Machine Learning
+pandas==2.2.3
+numpy==2.0.2
+scikit-learn==1.5.2
+tensorflow==2.18.0
+matplotlib==3.9.2
+streamlit==1.40.2

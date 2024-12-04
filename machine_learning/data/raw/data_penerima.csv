@@ -1,0 +1,101 @@
+id_penerima,makanan_dibutuhkan,jumlah_dibutuhkan,lokasi_lat_penerima,lokasi_lon_penerima,frekuensi_menerima,kondisi_makanan_diterima,is_halal_receiver,is_for_child_receiver,is_for_elderly_receiver,is_alergan_free,status_penerima
+T1,makanan,1,-5.3864306019901065,105.26266063515551,5,layak_konsumsi,False,False,True,False,tidak mendesak
+T2,minuman,20,-5.395715596342399,105.2619966594031,9,hampir_kadaluarsa,True,True,True,False,tidak mendesak
+T3,minuman,46,-5.396494113812611,105.28577151227366,4,tidak_layak konsumsi,True,False,True,False,normal
+T4,makanan_minuman,15,-5.37023611446767,105.2656968734426,5,hampir_kadaluarsa,False,True,False,False,mendesak
+T5,minuman,48,-5.396749754234537,105.27453068998103,10,layak_konsumsi,True,False,False,False,tidak mendesak
+T6,makanan,27,-5.384695057715781,105.27026869812133,9,layak_konsumsi_hampir_kadaluarsa,True,False,False,False,tidak mendesak
+T7,makanan,34,-5.396662394524932,105.24057247214117,1,tidak_layak konsumsi,True,True,False,False,mendesak
+T8,minuman,25,-5.405861402188426,105.24526636423208,7,layak_konsumsi,True,False,True,True,tidak mendesak
+T9,makanan,15,-5.372639329426373,105.25765231417023,10,hampir_kadaluarsa,True,True,False,True,tidak mendesak
+T10,makanan_minuman,41,-5.378808574001295,105.2585414717999,2,layak_konsumsi_hampir_kadaluarsa,False,True,False,True,normal
+T11,makanan,24,-5.382090652839067,105.28847287720163,3,hampir_kadaluarsa,True,False,True,False,mendesak
+T12,makanan,50,-5.388068736063081,105.25775482344024,2,layak_konsumsi,True,True,True,False,normal
+T13,makanan,27,-5.403203353556323,105.26040644381717,5,layak_konsumsi_hampir_kadaluarsa,False,True,False,False,tidak mendesak
+T14,makanan_minuman,25,-5.405373580704513,105.27593780771541,7,tidak_layak konsumsi,True,False,False,True,tidak mendesak
+T15,makanan,15,-5.380581031258931,105.27892324561779,10,hampir_kadaluarsa,False,True,True,False,tidak mendesak
+T16,makanan,40,-5.380794750411897,105.28023092149603,8,tidak_layak konsumsi,True,True,True,False,normal
+T17,makanan_minuman,12,-5.405527194625631,105.27239815083271,2,layak_konsumsi,True,True,True,False,tidak mendesak
+T18,makanan_minuman,6,-5.37031110474935,105.2548199234742,6,layak_konsumsi_hampir_kadaluarsa,False,False,True,False,normal
+T19,makanan,19,-5.372220550592904,105.25794844155962,7,hampir_kadaluarsa,True,False,True,True,normal
+T20,minuman,37,-5.369794990481451,105.28887759264008,4,layak_konsumsi_hampir_kadaluarsa,False,True,True,True,normal
+T21,makanan_minuman,32,-5.37413226402992,105.26711209662466,3,layak_konsumsi,True,True,True,True,normal
+T22,minuman,41,-5.402191352778549,105.24684477192488,7,layak_konsumsi_hampir_kadaluarsa,True,False,True,True,mendesak
+T23,makanan_minuman,48,-5.377686767907542,105.23020852253359,10,tidak_layak konsumsi,False,True,False,False,mendesak
+T24,minuman,2,-5.38096342688741,105.26266242460683,3,layak_konsumsi,True,False,False,False,normal
+T25,makanan_minuman,6,-5.371688281037655,105.24955254759533,1,layak_konsumsi,False,True,True,True,mendesak
+T26,makanan_minuman,7,-5.372421562233417,105.2657899577272,8,layak_konsumsi_hampir_kadaluarsa,True,False,False,True,normal
+T27,minuman,2,-5.368871101874476,105.26069496524246,8,tidak_layak konsumsi,False,True,False,True,normal
+T28,makanan_minuman,37,-5.393149441660301,105.25792649238338,10,hampir_kadaluarsa,True,True,True,True,mendesak
+T29,makanan,3,-5.372693127179539,105.27266354681059,3,tidak_layak konsumsi,False,False,False,False,mendesak
+T30,makanan_minuman,35,-5.401821902570533,105.25089057987516,9,tidak_layak konsumsi,True,True,True,False,tidak mendesak
+T31,makanan,24,-5.4053730961849675,105.22932688252544,10,tidak_layak konsumsi,True,False,False,False,normal
+T32,makanan,36,-5.370438503126896,105.28519116408657,10,layak_konsumsi_hampir_kadaluarsa,True,True,True,False,normal
+T33,minuman,5,-5.374699957648608,105.2858724054971,4,layak_konsumsi,True,False,True,False,tidak mendesak
+T34,makanan_minuman,28,-5.3803007765357505,105.27282900668936,5,layak_konsumsi,True,True,True,True,normal
+T35,makanan,7,-5.403418685394739,105.23045957440934,1,hampir_kadaluarsa,True,False,False,False,normal
+T36,makanan_minuman,6,-5.401535933637472,105.280817664295,8,layak_konsumsi_hampir_kadaluarsa,False,True,False,False,normal
+T37,makanan,15,-5.392577407969485,105.22753442876451,10,tidak_layak konsumsi,True,True,False,False,tidak mendesak
+T38,makanan_minuman,30,-5.400514755724289,105.27579325008365,7,layak_konsumsi,False,True,False,True,mendesak
+T39,makanan,12,-5.389982896871855,105.24811384027575,8,hampir_kadaluarsa,False,True,False,False,tidak mendesak
+T40,minuman,49,-5.40495278907557,105.22645794956661,5,tidak_layak konsumsi,True,False,False,False,tidak mendesak
+T41,minuman,9,-5.376539608366373,105.23427578420235,6,layak_konsumsi,False,False,False,True,mendesak
+T42,minuman,2,-5.380736035100376,105.26898118993108,4,hampir_kadaluarsa,True,False,False,False,tidak mendesak
+T43,makanan,19,-5.40538078795366,105.23590563896394,9,tidak_layak konsumsi,True,True,True,True,normal
+T44,makanan_minuman,10,-5.398236754579025,105.27665241846417,8,layak_konsumsi,True,False,False,False,tidak mendesak
+T45,makanan,40,-5.380132933886118,105.23174945202545,7,layak_konsumsi_hampir_kadaluarsa,True,True,False,False,normal
+T46,minuman,49,-5.4019639499640135,105.24466033546527,5,layak_konsumsi_hampir_kadaluarsa,True,True,True,False,mendesak
+T47,minuman,25,-5.403560282540464,105.2417630988575,5,layak_konsumsi_hampir_kadaluarsa,False,False,True,False,tidak mendesak
+T48,makanan,27,-5.4051271784764,105.25389445101615,8,tidak_layak konsumsi,False,False,False,False,normal
+T49,minuman,21,-5.401598958575674,105.27346986699298,1,layak_konsumsi,True,False,True,True,tidak mendesak
+T50,minuman,14,-5.370069366251486,105.26884882662708,1,hampir_kadaluarsa,False,False,True,True,mendesak
+T51,minuman,36,-5.374338085764345,105.28468646738955,6,hampir_kadaluarsa,False,False,True,True,tidak mendesak
+T52,minuman,47,-5.375894119619393,105.28468986906445,6,layak_konsumsi_hampir_kadaluarsa,True,True,True,False,tidak mendesak
+T53,makanan,29,-5.369571338716552,105.2525242039176,10,hampir_kadaluarsa,True,False,False,True,normal
+T54,minuman,2,-5.379657152373781,105.2698861008449,10,hampir_kadaluarsa,False,True,False,True,mendesak
+T55,makanan,12,-5.388522386483765,105.27706277908673,8,layak_konsumsi_hampir_kadaluarsa,True,True,False,True,tidak mendesak
+T56,minuman,31,-5.373461064830365,105.26966395429167,1,layak_konsumsi_hampir_kadaluarsa,True,False,False,False,mendesak
+T57,minuman,39,-5.371358177451811,105.23793641219581,9,hampir_kadaluarsa,False,True,True,True,mendesak
+T58,makanan_minuman,21,-5.379274811167013,105.23196871701796,7,hampir_kadaluarsa,False,False,False,False,normal
+T59,makanan_minuman,13,-5.397477069328855,105.24508441261938,5,tidak_layak konsumsi,True,False,False,False,normal
+T60,minuman,18,-5.396231541170549,105.23523512554382,7,hampir_kadaluarsa,True,False,False,True,tidak mendesak
+T61,makanan,24,-5.383732284836639,105.25163123860786,5,tidak_layak konsumsi,True,False,False,True,normal
+T62,minuman,16,-5.370237522037654,105.25175008304673,10,layak_konsumsi,False,False,False,False,normal
+T63,minuman,46,-5.367038847988304,105.25458678096442,5,layak_konsumsi,True,True,True,True,normal
+T64,makanan_minuman,37,-5.395779385828287,105.28799481581346,1,layak_konsumsi_hampir_kadaluarsa,True,True,True,False,tidak mendesak
+T65,makanan_minuman,42,-5.4044392619929225,105.24243096894085,10,layak_konsumsi_hampir_kadaluarsa,True,True,True,True,tidak mendesak
+T66,makanan_minuman,28,-5.373646089250235,105.28563111028991,3,hampir_kadaluarsa,False,False,False,True,tidak mendesak
+T67,makanan_minuman,42,-5.404514433154517,105.23500655240541,7,layak_konsumsi_hampir_kadaluarsa,False,False,False,False,mendesak
+T68,makanan,41,-5.393579743899067,105.2655448019048,3,tidak_layak konsumsi,True,True,True,False,tidak mendesak
+T69,minuman,41,-5.393327797568677,105.27499993647452,3,layak_konsumsi,False,True,True,False,tidak mendesak
+T70,makanan,19,-5.367002881852326,105.23535206853381,10,layak_konsumsi,True,True,True,True,tidak mendesak
+T71,minuman,19,-5.37550673001975,105.27881923041605,8,hampir_kadaluarsa,True,False,True,True,tidak mendesak
+T72,makanan,36,-5.368593638478763,105.23486103575259,7,tidak_layak konsumsi,False,True,True,True,mendesak
+T73,minuman,1,-5.379469373635833,105.2484517247208,8,hampir_kadaluarsa,False,False,True,True,tidak mendesak
+T74,makanan_minuman,27,-5.365638660896078,105.23057151792226,4,hampir_kadaluarsa,True,False,False,True,mendesak
+T75,makanan,5,-5.4048726380385705,105.23870134947607,2,tidak_layak konsumsi,False,False,True,True,mendesak
+T76,makanan,15,-5.3723874300841725,105.28575491035447,4,layak_konsumsi,True,False,False,True,mendesak
+T77,makanan,40,-5.395301399862481,105.23947093194286,9,layak_konsumsi_hampir_kadaluarsa,False,True,False,False,mendesak
+T78,makanan_minuman,32,-5.393063436518988,105.2388540721831,1,layak_konsumsi_hampir_kadaluarsa,True,True,True,False,normal
+T79,makanan_minuman,48,-5.381030519656766,105.23681123025402,5,layak_konsumsi,True,True,False,True,mendesak
+T80,makanan_minuman,34,-5.383450310730308,105.28377679760851,9,tidak_layak konsumsi,False,False,True,True,normal
+T81,minuman,25,-5.385611370230906,105.24602874642858,1,tidak_layak konsumsi,False,True,False,True,normal
+T82,minuman,49,-5.3902870497425495,105.22869194021577,8,layak_konsumsi,True,False,True,False,mendesak
+T83,makanan_minuman,37,-5.395735065850102,105.26762745154667,1,tidak_layak konsumsi,False,True,False,True,normal
+T84,makanan,37,-5.372728857715112,105.24624318404956,2,tidak_layak konsumsi,False,False,False,False,mendesak
+T85,minuman,19,-5.39779814491477,105.25857814062343,6,hampir_kadaluarsa,True,False,True,True,mendesak
+T86,minuman,31,-5.386114849911168,105.27045945270868,5,tidak_layak konsumsi,True,False,False,False,normal
+T87,minuman,8,-5.393398057234725,105.28340940019498,6,hampir_kadaluarsa,False,False,True,False,normal
+T88,makanan_minuman,39,-5.405180281479233,105.23735188275133,4,tidak_layak konsumsi,True,True,False,False,mendesak
+T89,makanan,14,-5.399108023771207,105.27216958344378,4,layak_konsumsi_hampir_kadaluarsa,False,False,True,False,tidak mendesak
+T90,makanan,39,-5.390441613800905,105.27703301608744,7,tidak_layak konsumsi,False,False,False,True,normal
+T91,makanan,26,-5.375387862251793,105.26687735828905,6,layak_konsumsi,True,True,False,True,mendesak
+T92,minuman,38,-5.395378305211837,105.27793105408936,3,hampir_kadaluarsa,True,False,True,True,tidak mendesak
+T93,makanan,12,-5.381446983224385,105.26058468399398,2,hampir_kadaluarsa,True,False,False,True,mendesak
+T94,minuman,35,-5.374230515527416,105.22970759178568,7,hampir_kadaluarsa,False,False,False,True,mendesak
+T95,makanan_minuman,25,-5.400424486390704,105.28099722354634,7,hampir_kadaluarsa,True,True,False,False,tidak mendesak
+T96,makanan,35,-5.374642765375084,105.23696016118342,5,tidak_layak konsumsi,True,False,True,False,tidak mendesak
+T97,makanan_minuman,41,-5.369458595044679,105.26370560997475,7,tidak_layak konsumsi,True,False,True,False,mendesak
+T98,makanan_minuman,7,-5.378248378692264,105.27908759930237,6,layak_konsumsi,False,True,True,True,mendesak
+T99,makanan,38,-5.394155064318565,105.2418673002478,9,layak_konsumsi,False,True,False,True,mendesak
+T100,makanan_minuman,28,-5.403640622561667,105.229304709088,3,hampir_kadaluarsa,True,True,False,True,normal
