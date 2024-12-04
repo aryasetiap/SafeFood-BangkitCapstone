@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">CapstoneProject</string>
+    <string name="author">SafeFood</string>
+    <string name="login">Login</string>
+    <string name="title_login_page">Login Page</string>
+    <string name="message_login_page">Pesan Login Page</string>
+    <string name="email">Email</string>
+    <string name="password">password</string>
+    <string name="title_register_page">Daftar</string>
+    <string name="name">nama</string>
+    <string name="register">Daftar Sekarang</string>
+    <string name="title_welcome_page">Selamat Datang</string>
+    <string name="message_welcome_page">Selamat Datang di SafeFood</string>
+    <string name="email_validation">Validasi Email</string>
+    <string name="password_length">Panjang Password</string>
+    <string name="title_register">Judul Daftar</string>
+    <string name="required_field">Harus Diisi</string>
+    <string name="login_success">Anda Berhasil Login\n</string>
+    <string name="next">Lanjut</string>
+    <string name="title_login">Judul Login</string>
+    <string name="hello_world">Hello World</string>
+    <string name="username">Hello, %1$s</string>
+    <string name="logout">keluar</string>
+    <string name="penerima">Penerima</string>
+    <string name="donatur">donatur</string>
+</resources>

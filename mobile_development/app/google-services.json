@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "561744805326",
+    "project_id": "submission-a7841",
+    "storage_bucket": "submission-a7841.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561744805326:android:5c230bc59f45fda96cff9f",
+        "android_client_info": {
+          "package_name": "com.dicoding.capstoneproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbUVM8pBujnxsE2HMWxXyC1wSuEG4RPsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
