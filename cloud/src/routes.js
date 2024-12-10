@@ -4,8 +4,12 @@ const {
   loginUserHandler,
   getAllRecipientsHandler,
   getAllDonorsHandler,
-  getDonorByIdHandler,
   getRecipientByIdHandler,
+  getDonorByIdHandler,
+  updateRecipientHandler,
+  updateDonorHandler,
+  deleteRecipientHandler,
+  deleteDonorHandler,
   createDonationsHandler,
 } = require("./handler");
 
@@ -32,13 +36,33 @@ const routes = [
   },
   {
     method: "GET",
-    path: "/recipients/{recipientId}",
+    path: "/recipients/{id_penerima}",
     handler: getRecipientByIdHandler,
   },
   {
     method: "GET",
-    path: "/donors/{donorId}",
+    path: "/donors/{id_penyumbang}",
     handler: getDonorByIdHandler,
+  },
+  {
+    method: "PUT",
+    path: "/recipients/{id_penerima}",
+    handler: updateRecipientHandler,
+  },
+  {
+    method: "PUT",
+    path: "/donors/{id_penyumbang}",
+    handler: updateDonorHandler,
+  },
+  {
+    method: "DELETE",
+    path: "/recipients/{id_penerima}",
+    handler: deleteRecipientHandler,
+  },
+  {
+    method: "DELETE",
+    path: "/donors/{id_penerima}",
+    handler: deleteDonorHandler,
   },
   {
     method: "POST",
