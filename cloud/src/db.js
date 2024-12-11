@@ -1,11 +1,11 @@
 const mysql = require("mysql2/promise");
 const connection = mysql.createConnection({
-  host: "34.101.229.68",
-  user: "root",
+  host: "localhost",
+  user: "zain",
   database: "safefood",
-  password: "bob123",
+  password: "zain",
   waitForConnections: true,
-  connectionLimit: 5,
+  connectionLimit: 1,
   queueLimit: 0,
 });
 
