@@ -821,6 +821,118 @@ const createDonationsHandler = async (request, h) => {
   }
 };
 
+const getAllDonationsHandler = async (request, h) => {
+  try {
+    const donations = await fetchAllDonationsFromDatabase();
+    const response = h.response({
+      status: "success",
+      data: donations,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "fail",
+      message: "Failed to fetch donations",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const getDonationByIdHandler = async (request, h) => {
+  const { id_donasi } = request.params;
+
+  try {
+    const donation = await fetchDonationByIdFromDatabase(id_donasi);
+    if (!donation) {
+      const response = h.response({
+        status: "fail",
+        message: "Donation not found",
+      });
+      response.code(404);
+      return response;
+    }
+    const response = h.response({
+      status: "success",
+      message: "donation is found",
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "fail",
+      message: "Failed to get Donation",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const updateDonationsHandler = async (request, h) => {
+  const { id_donasi } = request.params;
+  const updates = request.payload;
+
+  try {
+    const updatedDonation = await updateDonationInDatabase(id_donasi, updates);
+    if (!updatedDonation) {
+      const response = h.response({
+        status: "fail",
+        message: "Donation not found",
+      });
+      response.code(404);
+      return response;
+    }
+    const response = h.response({
+      status: "success",
+      message: "Donation Updated",
+      data: updatedDonation,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "fail",
+      message: "Failed to update donation",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const deleteDonationsHandler = async (request, h) => {
+  const { id_donasi } = request.params;
+
+  try {
+    const result = await deleteDonationFromDatabase(id_donasi);
+    if (!result) {
+      const response = h.response({
+        status: "fail",
+        message: "Donation not found",
+      });
+      response.code(404);
+      return response;
+    }
+    const response = h.response({
+      status: "success",
+      message: "Donation deleted",
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "fail",
+      message: "Failed to delete donation",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
 const saveDonationToDatabase = async (donation) => {
   const query = `
     INSERT INTO donations (
@@ -857,6 +969,30 @@ const saveDonationToDatabase = async (donation) => {
   ]);
 };
 
+const fetchAllDonationsFromDatabase = async () => {
+  const query = "SELECT * FROM donations;";
+  const [rows] = await connection.query(query);
+  return rows;
+};
+
+const fetchDonationByIdFromDatabase = async () => {
+  const query = "SELECT * FROM donations WHERE id_donasi = ?;";
+  const [rows] = await connection.query(query, [id_donasi]);
+  return rows[0];
+};
+
+const updateDonationInDatabase = async (id_donasi, updates) => {
+  const query = "UPDATE donations SET ? WHERE id_donasi = ?;";
+  const [result] = await connection.query(query, [updates, id_donasi]);
+  return result.affectedRows > 0;
+};
+
+const deleteDonationFromDatabase = async (id_donasi) => {
+  const query = "DELETE FROM donations WHERE id_donasi = ?;";
+  const [result] = await connection.query(query, [id_donasi]);
+  return result.affectedRows > 0;
+};
+
 module.exports = {
   registerRecipientHandler,
   registerDonorHandler,
@@ -870,4 +1006,8 @@ module.exports = {
   deleteRecipientHandler,
   deleteDonorHandler,
   createDonationsHandler,
+  getAllDonationsHandler,
+  getDonationByIdHandler,
+  updateDonationsHandler,
+  deleteDonationsHandler,
 };
