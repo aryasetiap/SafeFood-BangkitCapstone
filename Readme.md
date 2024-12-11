@@ -3,12 +3,10 @@
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)  ![Jupyter Notebook](https://img.shields.io/badge/Jupyter%20Notebook-F37626?style=flat&logo=jupyter&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)  ![Kotlin](https://img.shields.io/badge/Kotlin-1DA1F2?style=flat&logo=kotlin&logoColor=white)
 
----
 
 Food waste that is unused or still fit for consumption is often discarded, despite its potential to be composted or donated to communities in need. This issue not only harms the environment but also weakens food security, impacting millions who face hunger daily. SafeFood addresses these challenges by connecting contributors with suitable recipients, aligning with the Sustainable Development Goals (SDGs) of ending hunger, promoting responsible consumption, and addressing climate change. By facilitating access and ensuring safe, appropriate food distribution, this platform aims to reduce food waste while benefiting vulnerable communities.
 
 ## Features
----
 - Authentication (login and register)
 - Profile and edit profile
 - Display maps
@@ -16,7 +14,6 @@ Food waste that is unused or still fit for consumption is often discarded, despi
 - History donation
 
 ## Our Team
----
 
 | No    | ID Student      | Name Student               | Path              |
 |-------|-----------------|----------------------------|----------------   |
