@@ -1,3 +1,4 @@
+![logo SafeFood](https://github.com/user-attachments/assets/20502bf1-7036-46ce-b096-93486d18970a)
 # SafeFood
 ## _Feeding Hope, Saving Earth._
 
