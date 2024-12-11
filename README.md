@@ -16,12 +16,12 @@ Food waste that is unused or still fit for consumption is often discarded, despi
 
 ## Our Team
 
-| No    | ID Student      | Name Student               | Path              |
-|-------|-----------------|----------------------------|----------------   |
-| 1     | M248B4KY0680    | Arya Setia Pratama         | Machine Learning  |
-| 2     | M248B4KY1922    | Ikhwan Fajar Khatamy       | Machine Learning  |
-| 3     | M248B4KX0484    | Anastasia Harum Mawadah    | Machine Learning  |
-| 4     | C248B4KY3252    | Naswan Fachri Ramadhan Zain| Cloud Computing   |
-| 5     | C248B4KY4592    | Zain Ilmi                  | Cloud Computing   |
-| 6     | A248B4KY1658    | Habib Pandya               | Mobile Development|
-| 7     | A248B4KY0040    | Abid Maisen                | Mobile Development|
+| No    | ID Student      | Name Student               | Path              | Github | Linkedin |
+|-------|-----------------|----------------------------|-------------------|--------|----------|
+| 1     | M248B4KY0680    | Arya Setia Pratama         | Machine Learning  | [Github](https://github.com/aryasetiap)| [Linkedin](https://www.linkedin.com/in/aryasetiap/) |
+| 2     | M248B4KY1922    | Ikhwan Fajar Khatamy       | Machine Learning  | [Github](https://github.com/ikhwanfjr) | [Linkedin](https://www.linkedin.com/in/ikhwan-fajar-khatamy/) |
+| 3     | M248B4KX0484    | Anastasia Harum Mawadah    | Machine Learning  | Github |
+| 4     | C248B4KY3252    | Naswan Fachri Ramadhan Zain| Cloud Computing   | [Github](https://github.com/nframazain)| [Linkedin](www.linkedin.com/in/ramadhan-zain/) | 
+| 5     | C248B4KY4592    | Zain Ilmi                  | Cloud Computing   | [Github](https://github.com/Wuzi19)    | [Linkedin](https://www.linkedin.com/in/zain-ilmi-891a63294/) |
+| 6     | A248B4KY1658    | Habib Pandya               | Mobile Development| Github |
+| 7     | A248B4KY0040    | Abid Maisen                | Mobile Development| Github |
