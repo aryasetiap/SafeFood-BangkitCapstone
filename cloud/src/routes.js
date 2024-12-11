@@ -11,6 +11,10 @@ const {
   deleteRecipientHandler,
   deleteDonorHandler,
   createDonationsHandler,
+  getAllDonationsHandler,
+  getDonationByIdHandler,
+  updateDonationsHandler,
+  deleteDonationsHandler,
 } = require("./handler");
 
 const routes = [
@@ -73,6 +77,26 @@ const routes = [
     method: "POST",
     path: "/donations",
     handler: createDonationsHandler,
+  },
+  {
+    method: "GET",
+    path: "/donations",
+    handler: getAllDonationsHandler,
+  },
+  {
+    method: "GET",
+    path: "/donations/{id_donasi}",
+    handler: getDonationByIdHandler,
+  },
+  {
+    method: "PUT",
+    path: "/donations/{id_donasi}",
+    handler: updateDonationsHandler,
+  },
+  {
+    method: "DELETE",
+    path: "/donations/{id_donasi}",
+    handler: deleteDonationsHandler,
   },
 ];
 

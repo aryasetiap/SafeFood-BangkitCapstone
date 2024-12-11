@@ -28,20 +28,6 @@ const newRecipientIdHandler = async () => {
       }
     );
   });
-  return new Promise((resolve, reject) => {
-    connection.query(
-      "SELECT id_penerima FROM recipients ORDER BY id_penerima DESC LIMIT 1;",
-      (error, results) => {
-        if (error) {
-          return reject(error);
-        }
-        const lastId = results.length ? results[0].id_penerima : "T1";
-        const number = parseInt(lastId.substring(1));
-        const newId = `T${number + 1}`;
-        resolve(newId);
-      }
-    );
-  });
 };
 
 const newDonorIdHandler = async () => {
@@ -209,7 +195,6 @@ const registerDonorHandler = async (request, h) => {
     const password_penyumbang = await hashPass(password);
     const queryDonor =
       "INSERT INTO donors (id_penyumbang, nama_penyumbang, lokasi_lat_penyumbang, lokasi_lon_penyumbang, alamat_penyumbang, kontak_penyumbang, email_penyumbang, tentang_penyumbang, foto_profil_penyumbang, username_penyumbang, password_penyumbang, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-      "INSERT INTO donors (id_penyumbang, nama_penyumbang, lokasi_lat_penyumbang, lokasi_lon_penyumbang, alamat_penyumbang, kontak_penyumbang, email_penyumbang, tentang_penyumbang, foto_profil_penyumbang, username_penyumbang, password_penyumbang, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     await connection.query(queryDonor, [
       id_penyumbang,
       nama_penyumbang,
@@ -260,25 +245,6 @@ const getAllRecipientsHandler = async () => {
       }
     });
   });
-const getAllRecipientsHandler = async () => {
-  return new Promise((resolve, reject) => {
-    connection.query("SELECT * FROM recipients", (error, results) => {
-      if (error) {
-        reject({
-          message: "Query Failed",
-          code: 500,
-          error: error,
-        });
-      } else if (results.length === 0) {
-        reject({
-          message: "No Recipients found",
-          code: 404,
-        });
-      } else {
-        resolve(results);
-      }
-    });
-  });
 };
 
 const getRecipientByIdHandler = async (request, h) => {
@@ -307,35 +273,7 @@ const getRecipientByIdHandler = async (request, h) => {
         }
       );
     });
-    const [rows] = await new Promise((resolve, reject) => {
-      connection.query(
-        "SELECT * FROM recipients WHERE id_penerima = ?",
-        [id_penerima],
-        (error, results) => {
-          if (error) {
-            reject({
-              message: "Failed to get recipient by id",
-              code: 500,
-              error: error,
-            });
-          } else if (results.length === 0) {
-            reject({
-              message: "Recipient not found",
-              code: 404,
-            });
-          } else {
-            resolve(results);
-          }
-        }
-      );
-    });
 
-    return h
-      .response({
-        status: "success",
-        data: { recipient: rows },
-      })
-      .code(200);
     return h
       .response({
         status: "success",
@@ -344,12 +282,6 @@ const getRecipientByIdHandler = async (request, h) => {
       .code(200);
   } catch (error) {
     console.error(error);
-    return h
-      .response({
-        status: "error",
-        message: error.message,
-      })
-      .code(error.code);
     return h
       .response({
         status: "error",
@@ -439,92 +371,8 @@ const updateRecipientHandler = async (request, h) => {
         message: "Recipient updated successfully",
       })
       .code(200);
-  const updatedData = request.payload;
-
-  try {
-    const currentData = await new Promise((resolve, reject) => {
-      connection.query(
-        "SELECT * FROM recipients WHERE id_penerima = ?",
-        [id_penerima],
-        (error, results) => {
-          if (error) {
-            reject({
-              message: "Recipient data update failed",
-              code: 500,
-              error: error,
-            });
-          } else if (results.length === 0) {
-            reject({
-              message: "Recipient not found",
-              code: 404,
-            });
-          } else {
-            resolve(results[0]);
-          }
-        }
-      );
-    });
-
-    const mergedData = { ...currentData, ...updatedData };
-
-    await new Promise((resolve, reject) => {
-      connection.query(
-        "UPDATE recipients SET nama_penerima = ?, lokasi_lat_penerima = ?, lokasi_lon_penerima = ?, makanan_dibutuhkan = ?, jumlah_dibutuhkan = ?, kondisi_makanan_diterima = ?, is_halal_receiver = ?, is_for_child_receiver = ?, is_for_elderly_receiver = ?, is_alergan_free = ?, status_penerima = ?, frekuensi_penerima = ?, alamat_penerima = ?, kontak_penerima = ?, email_penerima = ?, tentang_penerima = ?, foto_profil_penerima = ?, username_penerima = ?, password_penerima = ? WHERE id_penerima = ?",
-        [
-          mergedData.nama_penerima,
-          mergedData.lokasi_lat_penerima,
-          mergedData.lokasi_lon_penerima,
-          mergedData.makanan_dibutuhkan,
-          mergedData.jumlah_dibutuhkan,
-          mergedData.kondisi_makanan_diterima,
-          mergedData.is_halal_receiver,
-          mergedData.is_for_child_receiver,
-          mergedData.is_for_elderly_receiver,
-          mergedData.is_alergan_free,
-          mergedData.status_penerima,
-          mergedData.frekuensi_penerima,
-          mergedData.alamat_penerima,
-          mergedData.kontak_penerima,
-          mergedData.email_penerima,
-          mergedData.tentang_penerima,
-          mergedData.foto_profil_penerima,
-          mergedData.username_penerima,
-          mergedData.password_penerima,
-          id_penerima,
-        ],
-        (error, results) => {
-          if (error) {
-            reject({
-              message: "Update Failed",
-              code: 500,
-              error: error,
-            });
-          } else if (results.affectedRows === 0) {
-            reject({
-              message: "No changes have been made",
-              code: 404,
-            });
-          } else {
-            resolve(results);
-          }
-        }
-      );
-    });
-
-    return h
-      .response({
-        status: "success",
-        message: "Recipient updated successfully",
-      })
-      .code(200);
   } catch (error) {
     console.error(error);
-    return h
-      .response({
-        status: "error",
-        message: error.message,
-      })
-      .code(error.code || 500);
     return h
       .response({
         status: "error",
@@ -534,25 +382,6 @@ const updateRecipientHandler = async (request, h) => {
   }
 };
 
-const getAllDonorsHandler = async () => {
-  return new Promise((resolve, reject) => {
-    connection.query("SELECT * FROM donors", (error, results) => {
-      if (error) {
-        reject({
-          message: "Query Failed",
-          code: 500,
-          error: error,
-        });
-      } else if (results.length === 0) {
-        reject({
-          message: "No Recipients found",
-          code: 404,
-        });
-      } else {
-        resolve(results);
-      }
-    });
-  });
 const getAllDonorsHandler = async () => {
   return new Promise((resolve, reject) => {
     connection.query("SELECT * FROM donors", (error, results) => {
@@ -600,35 +429,7 @@ const getDonorByIdHandler = async (request, h) => {
         }
       );
     });
-    const [rows] = await new Promise((resolve, reject) => {
-      connection.query(
-        "SELECT * FROM donors WHERE id_penyumbang = ?",
-        [id_penyumbang],
-        (error, results) => {
-          if (error) {
-            reject({
-              message: "Failed to get donor by id",
-              code: 500,
-              error: error,
-            });
-          } else if (results.length === 0) {
-            reject({
-              message: "Donor not found",
-              code: 404,
-            });
-          } else {
-            resolve(results);
-          }
-        }
-      );
-    });
 
-    return h
-      .response({
-        status: "success",
-        data: { donor: rows },
-      })
-      .code(200);
     return h
       .response({
         status: "success",
@@ -637,12 +438,6 @@ const getDonorByIdHandler = async (request, h) => {
       .code(200);
   } catch (error) {
     console.error(error);
-    return h
-      .response({
-        status: "error",
-        message: error.message,
-      })
-      .code(error.code);
     return h
       .response({
         status: "error",
@@ -723,83 +518,8 @@ const updateDonorHandler = async (request, h) => {
         message: "Recipient updated successfully",
       })
       .code(200);
-  const updatedData = request.payload;
-
-  try {
-    const currentData = await new Promise((resolve, reject) => {
-      connection.query(
-        "SELECT * FROM donors WHERE id_penyumbang = ?",
-        [id_penyumbang],
-        (error, results) => {
-          if (error) {
-            reject({
-              message: "Donor data update failed",
-              code: 500,
-              error: error,
-            });
-          } else if (results.length === 0) {
-            reject({
-              message: "Donor not found",
-              code: 404,
-            });
-          } else {
-            resolve(results[0]);
-          }
-        }
-      );
-    });
-
-    const mergedData = { ...currentData, ...mergedData };
-
-    await new Promise((resolve, reject) => {
-      connection.query(
-        "UPDATE donors SET nama_penyumbang = ?, lokasi_lat_penyumbang = ?, lokasi_lon_penyumbang = ?, alamat_penyumbang = ?, kontak_penyumbang = ?, email_penyumbang = ?, tentang_penyumbang = ?, foto_profil_penyumbang = ?, username_penyumbang = ?, password_penyumbang = ? WHERE id_penyumbang = ?",
-        [
-          mergedData.nama_penyumbang,
-          mergedData.lokasi_lat_penyumbang,
-          mergedData.lokasi_lon_penyumbang,
-          mergedData.alamat_penyumbang,
-          mergedData.kontak_penyumbang,
-          mergedData.email_penyumbang,
-          mergedData.tentang_penyumbang,
-          mergedData.foto_profil_penyumbang,
-          mergedData.username_penyumbang,
-          mergedData.password_penyumbang,
-          id_penyumbang,
-        ],
-        (error, results) => {
-          if (error) {
-            reject({
-              message: "Donor data update failed",
-              code: 500,
-              error: error,
-            });
-          } else if (results.affectedRows === 0) {
-            reject({
-              message: "No changes have been made",
-              code: 404,
-            });
-          } else {
-            resolve(results);
-          }
-        }
-      );
-    });
-
-    return h
-      .response({
-        status: "success",
-        message: "Recipient updated successfully",
-      })
-      .code(200);
   } catch (error) {
     console.error(error);
-    return h
-      .response({
-        status: "error",
-        message: error.message,
-      })
-      .code(error.code || 500);
     return h
       .response({
         status: "error",
@@ -813,19 +533,6 @@ const deleteRecipientHandler = async (request, h) => {
   const { id_penerima } = request.params;
 
   try {
-    const recipientData = await new Promise((resolve, reject) => {
-      connection.query(
-        "DELETE FROM recipients WHERE id_penerima = ?",
-        [id_penerima],
-        (error, results) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(results);
-          }
-        }
-      );
-    });
     const recipientData = await new Promise((resolve, reject) => {
       connection.query(
         "DELETE FROM recipients WHERE id_penerima = ?",
@@ -868,20 +575,6 @@ const deleteDonorHandler = async (request, h) => {
   const { id_penyumbang } = request.params;
 
   try {
-    const donorData = await new Promise((resolve, reject) => {
-      connection.query(
-        "DELETE FROM donors WHERE id_penyumbang = ?",
-        [id_penyumbang],
-        (error, results) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(results);
-          }
-        }
-      );
-    });
-
     const donorData = await new Promise((resolve, reject) => {
       connection.query(
         "DELETE FROM donors WHERE id_penyumbang = ?",
@@ -1037,27 +730,6 @@ const createDonationsHandler = async (request, h) => {
     foto_makanan,
     penilaian_penerima, // This will be filled by the recipient later
     ulasan, // This will be filled by the recipient later
-    id_donasi, // e.g., M1, M2, etc. PK for database
-    id_penyumbang, // This should be obtained from the authenticated donor FK from tables donors
-    id_penerima, // This should be provided in the request or obtained from context FK from tables recipients
-    makanan_disumbangkan,
-    jumlah_disumbangkan,
-    kondisi_makanan,
-    status_donasi,
-    is_halal_makanan,
-    is_for_child_makanan,
-    is_for_elderly_makanan,
-    is_alergan_makanan,
-    jarak,
-    waktu_donasi,
-    tanggal_kadaluarsa,
-    lokasi_lat_makanan,
-    lokasi_lon_makanan,
-    alamat_penerima,
-    deskripsi_makanan,
-    foto_makanan,
-    penilaian_penerima, // This will be filled by the recipient later
-    ulasan, // This will be filled by the recipient later
   } = request.payload;
 
   if (role !== "donor") {
@@ -1070,7 +742,6 @@ const createDonationsHandler = async (request, h) => {
   }
 
   if (!makanan_disumbangkan) {
-  if (!makanan_disumbangkan) {
     const response = h.response({
       status: "fail",
       message: "Gagal menambahkan Donasi. Mohon pilih jenis makanan",
@@ -1079,7 +750,6 @@ const createDonationsHandler = async (request, h) => {
     return response;
   }
 
-  if (!kondisi_makanan) {
   if (!kondisi_makanan) {
     const response = h.response({
       status: "fail",
@@ -1090,7 +760,6 @@ const createDonationsHandler = async (request, h) => {
   }
 
   if (!jumlah_disumbangkan) {
-  if (!jumlah_disumbangkan) {
     const response = h.response({
       status: "fail",
       message: "Gagal menambahkan Donasi. Mohon isi jumlah makanan",
@@ -1099,7 +768,6 @@ const createDonationsHandler = async (request, h) => {
     return response;
   }
 
-  if (!lokasi_lat_makanan || !lokasi_lon_makanan) {
   if (!lokasi_lat_makanan || !lokasi_lon_makanan) {
     const response = h.response({
       status: "fail",
@@ -1131,31 +799,9 @@ const createDonationsHandler = async (request, h) => {
     foto_makanan,
     penilaian_penerima, // Initially can be null or a default value
     ulasan, // Initially can be empty or null
-    id_donasi,
-    id_penyumbang,
-    id_penerima,
-    makanan_disumbangkan,
-    jumlah_disumbangkan,
-    kondisi_makanan,
-    status_donasi,
-    is_halal_makanan,
-    is_for_child_makanan,
-    is_for_elderly_makanan,
-    is_alergan_makanan,
-    jarak,
-    waktu_donasi,
-    tanggal_kadaluarsa,
-    lokasi_lat_makanan,
-    lokasi_lon_makanan,
-    alamat_penerima,
-    deskripsi_makanan,
-    foto_makanan,
-    penilaian_penerima, // Initially can be null or a default value
-    ulasan, // Initially can be empty or null
   };
 
   try {
-    await saveDonationToDatabase(newDonation);
     await saveDonationToDatabase(newDonation);
     const response = h.response({
       status: "success",
@@ -1169,6 +815,118 @@ const createDonationsHandler = async (request, h) => {
     const response = h.response({
       status: "fail",
       message: "Gagal menambahkan Donasi",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const getAllDonationsHandler = async (request, h) => {
+  try {
+    const donations = await fetchAllDonationsFromDatabase();
+    const response = h.response({
+      status: "success",
+      data: donations,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "fail",
+      message: "Failed to fetch donations",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const getDonationByIdHandler = async (request, h) => {
+  const { id_donasi } = request.params;
+
+  try {
+    const donation = await fetchDonationByIdFromDatabase(id_donasi);
+    if (!donation) {
+      const response = h.response({
+        status: "fail",
+        message: "Donation not found",
+      });
+      response.code(404);
+      return response;
+    }
+    const response = h.response({
+      status: "success",
+      message: "donation is found",
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "fail",
+      message: "Failed to get Donation",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const updateDonationsHandler = async (request, h) => {
+  const { id_donasi } = request.params;
+  const updates = request.payload;
+
+  try {
+    const updatedDonation = await updateDonationInDatabase(id_donasi, updates);
+    if (!updatedDonation) {
+      const response = h.response({
+        status: "fail",
+        message: "Donation not found",
+      });
+      response.code(404);
+      return response;
+    }
+    const response = h.response({
+      status: "success",
+      message: "Donation Updated",
+      data: updatedDonation,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "fail",
+      message: "Failed to update donation",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const deleteDonationsHandler = async (request, h) => {
+  const { id_donasi } = request.params;
+
+  try {
+    const result = await deleteDonationFromDatabase(id_donasi);
+    if (!result) {
+      const response = h.response({
+        status: "fail",
+        message: "Donation not found",
+      });
+      response.code(404);
+      return response;
+    }
+    const response = h.response({
+      status: "success",
+      message: "Donation deleted",
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "fail",
+      message: "Failed to delete donation",
     });
     response.code(500);
     return response;
@@ -1211,40 +969,28 @@ const saveDonationToDatabase = async (donation) => {
   ]);
 };
 
-const saveDonationToDatabase = async (donation) => {
-  const query = `
-    INSERT INTO donations (
-      id_donasi, id_penyumbang, id_penerima, makanan_disumbangkan, jumlah_disumbangkan,
-      kondisi_makanan, status_donasi, is_halal_makanan, is_for_child_makanan,
-      is_for_elderly_makanan, is_alergan_makanan, jarak, waktu_donasi,
-      tanggal_kadaluarsa, lokasi_lat_makanan, lokasi_lon_makanan,
-      alamat_penerima, deskripsi_makanan, foto_makanan, penilaian_penerima, ulasan
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-  `;
+const fetchAllDonationsFromDatabase = async () => {
+  const query = "SELECT * FROM donations;";
+  const [rows] = await connection.query(query);
+  return rows;
+};
 
-  await connection.query(query, [
-    donation.id_donasi,
-    donation.id_penyumbang,
-    donation.id_penerima,
-    donation.makanan_disumbangkan,
-    donation.jumlah_disumbangkan,
-    donation.kondisi_makanan,
-    donation.status_donasi,
-    donation.is_halal_makanan,
-    donation.is_for_child_makanan,
-    donation.is_for_elderly_makanan,
-    donation.is_alergan_makanan,
-    donation.jarak,
-    donation.waktu_donasi,
-    donation.tanggal_kadaluarsa,
-    donation.lokasi_lat_makanan,
-    donation.lokasi_lon_makanan,
-    donation.alamat_penerima,
-    donation.deskripsi_makanan,
-    donation.foto_makanan,
-    donation.penilaian_penerima,
-    donation.ulasan,
-  ]);
+const fetchDonationByIdFromDatabase = async () => {
+  const query = "SELECT * FROM donations WHERE id_donasi = ?;";
+  const [rows] = await connection.query(query, [id_donasi]);
+  return rows[0];
+};
+
+const updateDonationInDatabase = async (id_donasi, updates) => {
+  const query = "UPDATE donations SET ? WHERE id_donasi = ?;";
+  const [result] = await connection.query(query, [updates, id_donasi]);
+  return result.affectedRows > 0;
+};
+
+const deleteDonationFromDatabase = async (id_donasi) => {
+  const query = "DELETE FROM donations WHERE id_donasi = ?;";
+  const [result] = await connection.query(query, [id_donasi]);
+  return result.affectedRows > 0;
 };
 
 module.exports = {
@@ -1260,4 +1006,8 @@ module.exports = {
   deleteRecipientHandler,
   deleteDonorHandler,
   createDonationsHandler,
+  getAllDonationsHandler,
+  getDonationByIdHandler,
+  updateDonationsHandler,
+  deleteDonationsHandler,
 };
