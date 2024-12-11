@@ -2,14 +2,16 @@ const Bcrypt = require("bcrypt");
 const mysql = require("mysql");
 const authorizeUser = require("./authentications");
 const jwt = require("jsonwebtoken");
+const http = require("http");
+let model;
 
 const connection = mysql.createConnection({
-  host: "34.101.229.68",
-  user: "root",
+  host: "localhost",
+  user: "zain",
   database: "safefood",
-  password: "bob123",
+  password: "zain",
   waitForConnections: true,
-  connectionLimit: 5,
+  connectionLimit: 1,
   queueLimit: 0,
 });
 
@@ -1079,6 +1081,10 @@ const deleteDonationsHandler = async (request, h) => {
 };
 
 module.exports = {
+  connection,
+  initializeModel,
+  predictWithModel,
+  fetchAddressFromGoogleMaps,
   registerRecipientHandler,
   registerDonorHandler,
   loginUserHandler,
