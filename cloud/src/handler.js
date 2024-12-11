@@ -971,25 +971,25 @@ const saveDonationToDatabase = async (donation) => {
 
 const fetchAllDonationsFromDatabase = async () => {
   const query = "SELECT * FROM donations;";
-  const [rows] = await connection.query(query);
+  const rows = await connection.query(query);
   return rows;
 };
 
 const fetchDonationByIdFromDatabase = async () => {
   const query = "SELECT * FROM donations WHERE id_donasi = ?;";
-  const [rows] = await connection.query(query, [id_donasi]);
+  const rows = await connection.query(query, [id_donasi]);
   return rows[0];
 };
 
 const updateDonationInDatabase = async (id_donasi, updates) => {
   const query = "UPDATE donations SET ? WHERE id_donasi = ?;";
-  const [result] = await connection.query(query, [updates, id_donasi]);
+  const result = await connection.query(query, [updates, id_donasi]);
   return result.affectedRows > 0;
 };
 
 const deleteDonationFromDatabase = async (id_donasi) => {
   const query = "DELETE FROM donations WHERE id_donasi = ?;";
-  const [result] = await connection.query(query, [id_donasi]);
+  const result = await connection.query(query, [id_donasi]);
   return result.affectedRows > 0;
 };
 
