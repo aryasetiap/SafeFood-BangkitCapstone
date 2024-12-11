@@ -9,7 +9,7 @@ Food waste that is unused or still fit for consumption is often discarded, despi
 ## Features
 - Authentication (login and register)
 - Profile and edit profile
-- Display maps
+- Display maps 
 - Donation feature
 - History donation
 
@@ -17,7 +17,7 @@ Food waste that is unused or still fit for consumption is often discarded, despi
 
 | No    | ID Student      | Name Student               | Path              |
 |-------|-----------------|----------------------------|----------------   |
-| 1     | M248B4KY0680    | Arya Setia Pratama         |Machine Learning   |
+| 1     | M248B4KY0680    | Arya Setia Pratama         | Machine Learning  |
 | 2     | M248B4KY1922    | Ikhwan Fajar Khatamy       | Machine Learning  |
 | 3     | M248B4KX0484    | Anastasia Harum Mawadah    | Machine Learning  |
 | 4     | C248B4KY3252    | Naswan Fachri Ramadhan Zain| Cloud Computing   |
