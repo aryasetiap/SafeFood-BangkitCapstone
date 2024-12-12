@@ -6,6 +6,9 @@
 
 Food waste that is unused or still fit for consumption is often discarded, despite its potential to be composted or donated to communities in need. This issue not only harms the environment but also weakens food security, impacting millions who face hunger daily. SafeFood addresses these challenges by connecting contributors with suitable recipients, aligning with the Sustainable Development Goals (SDGs) of ending hunger, promoting responsible consumption, and addressing climate change. By facilitating access and ensuring safe, appropriate food distribution, this platform aims to reduce food waste while benefiting vulnerable communities.
 
+## Mockup
+![Screenshot 2024-12-12 191506](https://github.com/user-attachments/assets/d343df30-ce7f-4c05-898b-af15ee2e4bb8)
+
 ## Features
 - Authentication (login and register)
 - Profile and edit profile
