@@ -2,10 +2,9 @@ const Bcrypt = require("bcrypt");
 const mysql = require("mysql");
 const authorizeUser = require("./authentications");
 const jwt = require("jsonwebtoken");
-const tf = require("@tensorflow/tfjs-node");
 
 const connection = mysql.createConnection({
-  host: "10.8.0.3",
+  host: "34.128.98.202",
   user: "root",
   database: "safefood",
   password: "safefood123",
@@ -13,244 +12,6 @@ const connection = mysql.createConnection({
   connectionLimit: 5,
   queueLimit: 0,
 });
-
-async function loadModel() {
-  try {
-    // Path ke model.json (sesuaikan path dengan lokasi model Anda)
-    const modelPath = "file://model/model.json";
-    const model = await tf.loadLayersModel(modelPath);
-    console.log("Model loaded successfully");
-    return model;
-  } catch (error) {
-    console.error("Error loading model:", error);
-    throw error;
-  }
-}
-
-const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const toRadians = (degrees) => (degrees * Math.PI) / 180;
-  const R = 6371; // Radius bumi dalam kilometer
-  const dLat = toRadians(lat2 - lat1);
-  const dLon = toRadians(lon2 - lon1);
-
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRadians(lat1)) *
-      Math.cos(toRadians(lat2)) *
-      Math.sin(dLon / 2) ** 2;
-
-  return 2 * R * Math.asin(Math.sqrt(a));
-};
-
-const preprocessData = (recipients, donation) => {
-  try {
-    const processedData = [];
-    const idRecipientList = [];
-
-    recipients.forEach((recipient) => {
-      idPenerimaList.push(penerima.id_penerima);
-      const feature = [
-        donation.jumlah_disumbangkan,
-        donation.is_halal_makanan ? 1 : 0,
-        donation.is_for_child_makanan ? 1 : 0,
-        donation.is_for_elderly_makanan ? 1 : 0,
-        donation.is_alergan_makanan ? 1 : 0,
-        recipient.jumlah_dibutuhkan,
-        recipient.frekuensi_penerima,
-        recipient.is_halal_receiver ? 1 : 0,
-        recipient.is_for_child_receiver ? 1 : 0,
-        recipient.is_for_elderly_receiver ? 1 : 0,
-        recipient.is_alergan_free ? 1 : 0,
-        donation.makanan_disumbangkan === "makanan" ? 1 : 0,
-        donation.makanan_disumbangkan === "makanan_minuman" ? 1 : 0,
-        donation.makanan_disumbangkan === "minuman" ? 1 : 0,
-        donation.kondisi_makanan === "hampir_kadaluarsa" ? 1 : 0,
-        donation.kondisi_makanan === "layak_konsumsi" ? 1 : 0,
-        donation.kondisi_makanan === "tidak_layak_konsumsi" ? 1 : 0,
-        recipient.makanan_dibutuhkan === "makanan" ? 1 : 0,
-        recipient.makanan_dibutuhkan === "makanan_minuman" ? 1 : 0,
-        recipient.makanan_dibutuhkan === "minuman" ? 1 : 0,
-        recipient.kondisi_makanan_diterima === "hampir_kadaluarsa" ? 1 : 0,
-        recipient.kondisi_makanan_diterima === "layak_konsumsi" ? 1 : 0,
-        recipient.kondisi_makanan_diterima === "tidak_layak_konsumsi" ? 1 : 0,
-        recipient.status_penerima === "mendesak" ? 1 : 0,
-        recipient.status_penerima === "normal" ? 1 : 0,
-        recipient.status_penerima === "tidak_mendesak" ? 1 : 0,
-        calculateDistance(
-          recipient.lokasi_lat_penerima,
-          recipient.lokasi_lon_penerima,
-          donation.lokasi_lat_makanan,
-          donation.lokasi_lon_makanan
-        ),
-      ];
-      processedData.push(feature);
-    });
-
-    return [idRecipientList, processedData];
-  } catch (error) {
-    console.error("Error during preprocessing:", error);
-    throw error;
-  }
-};
-
-const prepareInputForModel = async () => {
-  try {
-    const recipients = await getAllRecipientsHandler();
-    const donations = await new Promise((resolve, reject) => {
-      connection.query(
-        "SELECT * FROM donations WHERE id_donasi = ? ORDER BY id_donasi DESC LIMIT 1", // Urutkan berdasarkan ID
-        [id_donasi], // Ganti dengan parameter yang sesuai
-        (error, results) => {
-          if (error) {
-            reject({
-              message: "Query Failed",
-              code: 500,
-              error: error,
-            });
-          } else if (results.length === 0) {
-            reject({
-              message: "No Donations Found",
-              code: 404,
-            });
-          } else {
-            resolve(results[0]); // Mengembalikan data terakhir berdasarkan ID
-          }
-        }
-      );
-    });
-
-    const [idRecipientList, processedData] = preprocessData(
-      recipients,
-      donations
-    );
-    console.log("Data preprocessed successfully:", processedData.shape);
-
-    return [idRecipientList, processedData];
-  } catch (error) {
-    console.error("Error preparing input for model:", error);
-    throw error;
-  }
-};
-
-const runModel = async (inputModel) => {
-  try {
-    const model = await loadModel();
-
-    const predictions = model.predict(inputModel);
-
-    const outputModel = predictions.arraySync();
-
-    console.log("Model prediction completed:", outputModel);
-    return outputModel;
-  } catch (error) {
-    console.error("Error during prediction:", error);
-    throw error;
-  }
-};
-
-const predict = async () => {
-  try {
-    const [idRecipientList, inputModel] = await prepareInputForModel();
-
-    const predictionResults = await runModel(inputModel);
-
-    const combinedResults = idRecipientList.map((recipientId, index) => ({
-      recipientId,
-      prediction: predictionResults[index], // Hasil prediksi untuk ID penerima ini
-    }));
-
-    const sortedResults = combinedResults.sort(
-      (a, b) => b.prediction - a.prediction
-    );
-
-    console.log("Prediction results:", sortedResults);
-    try {
-      // Koneksi ke database
-      const query = "INSERT INTO predicts (id_penerima, prediction) VALUES ?";
-      const values = sortedResults.map((result) => [
-        result.recipientId,
-        result.prediction,
-      ]);
-
-      return new Promise((resolve, reject) => {
-        connection.query(query, [values], (error, results) => {
-          if (error) {
-            reject({
-              message: "Error saving prediction results",
-              code: 500,
-              error: error,
-            });
-          } else {
-            resolve(results);
-            console.log("YEEEEEEEEEEEEEEEEEEEEEEEE");
-          }
-        });
-      });
-    } catch (error) {
-      console.error("Error during saving prediction results:", error);
-      throw error;
-    }
-  } catch (error) {
-    console.error("Error during prediction:", error);
-    throw error;
-  }
-};
-
-// const savePredictionResults = async (sortedResults) => {
-//   try {
-//     // Koneksi ke database
-//     const query = "INSERT INTO predicts (id_penerima, prediction) VALUES ?";
-//     const values = sortedResults.map((result) => [
-//       result.recipientId,
-//       result.prediction,
-//     ]);
-
-//     return new Promise((resolve, reject) => {
-//       connection.query(query, [values], (error, results) => {
-//         if (error) {
-//           reject({
-//             message: "Error saving prediction results",
-//             code: 500,
-//             error: error,
-//           });
-//         } else {
-//           resolve(results);
-//         }
-//       });
-//     });
-//   } catch (error) {
-//     console.error("Error during saving prediction results:", error);
-//     throw error;
-//   }
-// };
-
-const fetchAddressFromGoogleMaps = (latitude, longitude) => {
-  return new Promise((resolve, reject) => {
-    const apiKey = "AIzaSyB22I3G0_XORCGf3KRbo_Sgaf6YLSrdj84";
-    const url = `http://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
-
-    http
-      .get(url, (res) => {
-        let data = "";
-
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-
-        res.on("end", () => {
-          try {
-            const result = JSON.parse(data);
-            resolve(result);
-          } catch (error) {
-            reject(error);
-          }
-        });
-      })
-      .on("error", (err) => {
-        reject(err);
-      });
-  });
-};
 
 const newRecipientIdHandler = async () => {
   return new Promise((resolve, reject) => {
@@ -442,7 +203,7 @@ const registerDonorHandler = async (request, h) => {
 
     const password_penyumbang = await hashPass(password);
     const queryDonor =
-      "INSERT INTO donors (id_penyumbang, nama_penyumbang, kontak_penyumbang, email_penyumbang, username_penyumbang, password_penyumbang, role) VALUES (?, ?, ?, ?, ?);";
+      "INSERT INTO donors (id_penyumbang, nama_penyumbang, kontak_penyumbang, email_penyumbang, username_penyumbang, password_penyumbang, role) VALUES (?, ?, ?, ?, ?, ?, ?);";
     await connection.query(queryDonor, [
       id_penyumbang,
       nama_penyumbang,
@@ -954,25 +715,17 @@ const createDonationsHandler = async (request, h) => {
   try {
     const {
       id_penyumbang, // This should be obtained from the authenticated donor FK from tables donors
-      id_penerima, // This should be provided in the request or obtained from context FK from tables recipients
       makanan_disumbangkan,
       jumlah_disumbangkan,
       kondisi_makanan,
-      status_donasi,
       is_halal_makanan,
       is_for_child_makanan,
       is_for_elderly_makanan,
       is_alergan_makanan,
-      jarak,
-      waktu_donasi,
       tanggal_kadaluarsa,
       lokasi_lat_makanan,
       lokasi_lon_makanan,
-      alamat_penerima,
-      deskripsi_makanan,
-      foto_makanan,
-      penilaian_penerima, // This will be filled by the recipient later
-      ulasan, // This will be filled by the recipient later
+      role,
     } = request.payload;
 
     if (role !== "donor") {
@@ -1021,31 +774,24 @@ const createDonationsHandler = async (request, h) => {
     }
 
     const id_donasi = await newDonationIdHandler();
+    const waktu_donasi = new Date();
 
     const newDonationQuery =
-      "INSERT INTO donations (id_donasi, id_penyumbang, id_penerima, makanan_disumbangkan, jumlah_disumbangkan, kondisi_makanan, status_donasi, is_halal_makanan, is_for_child_makanan, is_for_elderly_makanan, is_alergan_makanan, jarak, waktu_donasi,  tanggal_kadaluarsa, lokasi_lat_makanan, lokasi_lon_makanan, alamat_penerima, deskripsi_makanan, foto_makanan, penilaian_penerima, ulasan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      "INSERT INTO donations (id_donasi, id_penyumbang, makanan_disumbangkan, jumlah_disumbangkan, kondisi_makanan, is_halal_makanan, is_for_child_makanan, is_for_elderly_makanan, is_alergan_makanan, waktu_donasi,  tanggal_kadaluarsa, lokasi_lat_makanan, lokasi_lon_makanan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     await connection.query(newDonationQuery, [
       id_donasi,
       id_penyumbang,
-      id_penerima,
       makanan_disumbangkan,
       jumlah_disumbangkan,
       kondisi_makanan,
-      status_donasi,
       is_halal_makanan,
       is_for_child_makanan,
       is_for_elderly_makanan,
       is_alergan_makanan,
-      jarak,
       waktu_donasi,
       tanggal_kadaluarsa,
       lokasi_lat_makanan,
       lokasi_lon_makanan,
-      alamat_penerima,
-      deskripsi_makanan,
-      foto_makanan,
-      penilaian_penerima, // Initially can be null or a default value
-      ulasan, // Initially can be empty or null
     ]);
 
     const response = h.response({

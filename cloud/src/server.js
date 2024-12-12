@@ -14,12 +14,6 @@ const init = async () => {
 
   server.route(routes);
 
-  await server.register([
-    {
-      plugin: predicts,
-    },
-  ]);
-
   await server.start();
   console.log(`Server start on ${server.info.uri}`);
 };
