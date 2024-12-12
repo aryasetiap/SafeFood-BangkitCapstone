@@ -24,3 +24,8 @@ Food waste that is unused or still fit for consumption is often discarded, despi
 | 5     | C248B4KY4592    | Zain Ilmi                  | Cloud Computing   | [Github](https://github.com/Wuzi19)    | [Linkedin](https://www.linkedin.com/in/zain-ilmi-891a63294/) |
 | 6     | A248B4KY1658    | Habib Pandya               | Mobile Development| [Github](https://github.com/habibzzzzzz) | [Linkedin](https://id.linkedin.com/in/habib-pandya/) |
 | 7     | A248B4KY0040    | Abid Maisen                | Mobile Development| [Github](https://github.com/abidmaisenn-mp) | [Linkedin](https://id.linkedin.com/in/abidmaisen0105) |
+
+## Tech Stack
+**Mobile Development:** Retrofit, Android SDk, Android Studio, CameraX 
+**Cloud Computing:** Hapi.js, Compute Engine, Cloud SQL, Cloud Storage, Postman
+**Machine Learning:** Python, Tensorflow, Pandas, Matplotlib, NumPy, Sklearn
