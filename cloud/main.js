@@ -6,6 +6,7 @@ const handler = require("./handler"); // Import handler.js
 
 // Muat model AI saat server dimulai
 let model;
+
 const initializeModel = async () => {
   try {
     model = await loadModel();
@@ -30,7 +31,7 @@ app.post("/process-data", async (req, res) => {
     const [idRecipientList, encodedData] = preprocessData(recipients, makanan);
 
     // Prediksi menggunakan model dari handler.js
-    const predictions = await handler.predictWithModel(encodedData);
+    const predictions = await handler.getPredictionsFromModel(encodedData);
 
     // Gabungkan hasil prediksi
     const combinedResults = idRecipientList.map((id, index) => ({
@@ -53,4 +54,3 @@ app.post("/process-data", async (req, res) => {
     res.status(500).json({ status: "error", message: error.message });
   }
 });
-

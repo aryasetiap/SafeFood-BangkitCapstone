@@ -6,8 +6,7 @@ let model;
 // Fungsi untuk memuat model dari file lokal
 const loadModel = async () => {
   try {
-    const modelPath = path.resolve(__dirname, "../model/model_safefood_best.keras");
-    model = await tf.loadLayersModel(`file://${modelPath}`);
+    model = await tf.loadLayersModel(`file://model/model.json`);
     console.log("Model loaded successfully.");
   } catch (error) {
     console.error("Failed to load model:", error);
