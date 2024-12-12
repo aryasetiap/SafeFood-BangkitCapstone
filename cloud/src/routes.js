@@ -15,9 +15,20 @@ const {
   getDonationByIdHandler,
   updateDonationsHandler,
   deleteDonationsHandler,
+  predict,
 } = require("./handler");
 
 const routes = [
+  {
+    method: "POST",
+    path: "/predict",
+    handler: predict,
+  },
+  {
+    method: "POST",
+    path: "/loadModel",
+    handler: loadModel,
+  },
   {
     method: "POST",
     path: "/recipients",

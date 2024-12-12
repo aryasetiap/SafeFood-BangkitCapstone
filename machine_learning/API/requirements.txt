@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+tensorflow
+mysql-connector-python
+python-dotenv
+sqlalchemy

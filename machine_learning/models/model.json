@@ -8,7 +8,7 @@
         "model_config": {
             "class_name": "Sequential",
             "config": {
-                "name": "sequential",
+                "name": "sequential_1",
                 "trainable": true,
                 "dtype": {
                     "module": "keras",
@@ -28,13 +28,13 @@
                             ],
                             "dtype": "float32",
                             "sparse": false,
-                            "name": "input_layer"
+                            "name": "input_layer_1"
                         }
                     },
                     {
                         "class_name": "Dense",
                         "config": {
-                            "name": "dense",
+                            "name": "dense_2",
                             "trainable": true,
                             "dtype": {
                                 "module": "keras",
@@ -70,7 +70,7 @@
                     {
                         "class_name": "Dropout",
                         "config": {
-                            "name": "dropout",
+                            "name": "dropout_1",
                             "trainable": true,
                             "dtype": {
                                 "module": "keras",
@@ -88,7 +88,7 @@
                     {
                         "class_name": "Dense",
                         "config": {
-                            "name": "dense_1",
+                            "name": "dense_3",
                             "trainable": true,
                             "dtype": {
                                 "module": "keras",
@@ -167,7 +167,7 @@
             ],
             "weights": [
                 {
-                    "name": "sequential/dense/kernel",
+                    "name": "sequential_1/dense_2/kernel",
                     "shape": [
                         28,
                         96
@@ -175,14 +175,14 @@
                     "dtype": "float32"
                 },
                 {
-                    "name": "sequential/dense/bias",
+                    "name": "sequential_1/dense_2/bias",
                     "shape": [
                         96
                     ],
                     "dtype": "float32"
                 },
                 {
-                    "name": "sequential/dense_1/kernel",
+                    "name": "sequential_1/dense_3/kernel",
                     "shape": [
                         96,
                         1
@@ -190,7 +190,7 @@
                     "dtype": "float32"
                 },
                 {
-                    "name": "sequential/dense_1/bias",
+                    "name": "sequential_1/dense_3/bias",
                     "shape": [
                         1
                     ],

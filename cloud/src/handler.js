@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const tf = require("@tensorflow/tfjs-node");
 
 const connection = mysql.createConnection({
-  host: "10.8.0.3",
+  host: "34.128.98.202",
   user: "root",
   database: "safefood",
   password: "safefood123",
@@ -16,7 +16,6 @@ const connection = mysql.createConnection({
 
 async function loadModel() {
   try {
-    // Path ke model.json (sesuaikan path dengan lokasi model Anda)
     const modelPath = "file://model/model.json";
     const model = await tf.loadLayersModel(modelPath);
     console.log("Model loaded successfully");
@@ -26,6 +25,10 @@ async function loadModel() {
     throw error;
   }
 }
+
+const test = () => {
+  return loadModel();
+};
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const toRadians = (degrees) => (degrees * Math.PI) / 180;
@@ -1282,4 +1285,5 @@ module.exports = {
   getDonationByIdHandler,
   updateDonationsHandler,
   deleteDonationsHandler,
+  predict,
 };
