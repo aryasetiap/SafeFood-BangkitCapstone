@@ -2,40 +2,227 @@ const Bcrypt = require("bcrypt");
 const mysql = require("mysql");
 const authorizeUser = require("./authentications");
 const jwt = require("jsonwebtoken");
+const tf = require("@tensorflow/tfjs-node");
 
 const connection = mysql.createConnection({
-  host: "34.101.229.68",
+  host: "10.8.0.3",
   user: "root",
   database: "safefood",
-  password: "bob123",
+  password: "safefood123",
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0,
 });
 
-let model;
+async function loadModel() {
+  try {
+    // Path ke model.json (sesuaikan path dengan lokasi model Anda)
+    const modelPath = "file://model/model.json";
+    const model = await tf.loadLayersModel(modelPath);
+    console.log("Model loaded successfully");
+    return model;
+  } catch (error) {
+    console.error("Error loading model:", error);
+    throw error;
+  }
+}
 
-const initializeModel = (loadedModel) => {
-  model = loadedModel;
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const toRadians = (degrees) => (degrees * Math.PI) / 180;
+  const R = 6371; // Radius bumi dalam kilometer
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRadians(lat1)) *
+      Math.cos(toRadians(lat2)) *
+      Math.sin(dLon / 2) ** 2;
+
+  return 2 * R * Math.asin(Math.sqrt(a));
 };
 
-const predictWithModel = async (encodedData) => {
-  if (!model) {
-    throw new Error(
-      "Model belum dimuat. Pastikan server memuat model sebelum memproses prediksi."
-    );
-  }
-
+const preprocessData = (recipients, donation) => {
   try {
-    const tf = require("@tensorflow/tfjs-node");
-    const inputTensor = tf.tensor(encodedData);
-    const predictions = model.predict(inputTensor);
-    return predictions.array(); // Hasil prediksi sebagai array
+    const processedData = [];
+    const idRecipientList = [];
+
+    recipients.forEach((recipient) => {
+      idPenerimaList.push(penerima.id_penerima);
+      const feature = [
+        donation.jumlah_disumbangkan,
+        donation.is_halal_makanan ? 1 : 0,
+        donation.is_for_child_makanan ? 1 : 0,
+        donation.is_for_elderly_makanan ? 1 : 0,
+        donation.is_alergan_makanan ? 1 : 0,
+        recipient.jumlah_dibutuhkan,
+        recipient.frekuensi_penerima,
+        recipient.is_halal_receiver ? 1 : 0,
+        recipient.is_for_child_receiver ? 1 : 0,
+        recipient.is_for_elderly_receiver ? 1 : 0,
+        recipient.is_alergan_free ? 1 : 0,
+        donation.makanan_disumbangkan === "makanan" ? 1 : 0,
+        donation.makanan_disumbangkan === "makanan_minuman" ? 1 : 0,
+        donation.makanan_disumbangkan === "minuman" ? 1 : 0,
+        donation.kondisi_makanan === "hampir_kadaluarsa" ? 1 : 0,
+        donation.kondisi_makanan === "layak_konsumsi" ? 1 : 0,
+        donation.kondisi_makanan === "tidak_layak_konsumsi" ? 1 : 0,
+        recipient.makanan_dibutuhkan === "makanan" ? 1 : 0,
+        recipient.makanan_dibutuhkan === "makanan_minuman" ? 1 : 0,
+        recipient.makanan_dibutuhkan === "minuman" ? 1 : 0,
+        recipient.kondisi_makanan_diterima === "hampir_kadaluarsa" ? 1 : 0,
+        recipient.kondisi_makanan_diterima === "layak_konsumsi" ? 1 : 0,
+        recipient.kondisi_makanan_diterima === "tidak_layak_konsumsi" ? 1 : 0,
+        recipient.status_penerima === "mendesak" ? 1 : 0,
+        recipient.status_penerima === "normal" ? 1 : 0,
+        recipient.status_penerima === "tidak_mendesak" ? 1 : 0,
+        calculateDistance(
+          recipient.lokasi_lat_penerima,
+          recipient.lokasi_lon_penerima,
+          donation.lokasi_lat_makanan,
+          donation.lokasi_lon_makanan
+        ),
+      ];
+      processedData.push(feature);
+    });
+
+    return [idRecipientList, processedData];
+  } catch (error) {
+    console.error("Error during preprocessing:", error);
+    throw error;
+  }
+};
+
+const prepareInputForModel = async () => {
+  try {
+    const recipients = await getAllRecipientsHandler();
+    const donations = await new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM donations WHERE id_donasi = ? ORDER BY id_donasi DESC LIMIT 1", // Urutkan berdasarkan ID
+        [id_donasi], // Ganti dengan parameter yang sesuai
+        (error, results) => {
+          if (error) {
+            reject({
+              message: "Query Failed",
+              code: 500,
+              error: error,
+            });
+          } else if (results.length === 0) {
+            reject({
+              message: "No Donations Found",
+              code: 404,
+            });
+          } else {
+            resolve(results[0]); // Mengembalikan data terakhir berdasarkan ID
+          }
+        }
+      );
+    });
+
+    const [idRecipientList, processedData] = preprocessData(
+      recipients,
+      donations
+    );
+    console.log("Data preprocessed successfully:", processedData.shape);
+
+    return [idRecipientList, processedData];
+  } catch (error) {
+    console.error("Error preparing input for model:", error);
+    throw error;
+  }
+};
+
+const runModel = async (inputModel) => {
+  try {
+    const model = await loadModel();
+
+    const predictions = model.predict(inputModel);
+
+    const outputModel = predictions.arraySync();
+
+    console.log("Model prediction completed:", outputModel);
+    return outputModel;
   } catch (error) {
     console.error("Error during prediction:", error);
-    throw new Error("Gagal melakukan prediksi dengan model AI.");
+    throw error;
   }
 };
+
+const predict = async () => {
+  try {
+    const [idRecipientList, inputModel] = await prepareInputForModel();
+
+    const predictionResults = await runModel(inputModel);
+
+    const combinedResults = idRecipientList.map((recipientId, index) => ({
+      recipientId,
+      prediction: predictionResults[index], // Hasil prediksi untuk ID penerima ini
+    }));
+
+    const sortedResults = combinedResults.sort(
+      (a, b) => b.prediction - a.prediction
+    );
+
+    console.log("Prediction results:", sortedResults);
+    try {
+      // Koneksi ke database
+      const query = "INSERT INTO predicts (id_penerima, prediction) VALUES ?";
+      const values = sortedResults.map((result) => [
+        result.recipientId,
+        result.prediction,
+      ]);
+
+      return new Promise((resolve, reject) => {
+        connection.query(query, [values], (error, results) => {
+          if (error) {
+            reject({
+              message: "Error saving prediction results",
+              code: 500,
+              error: error,
+            });
+          } else {
+            resolve(results);
+            console.log("YEEEEEEEEEEEEEEEEEEEEEEEE");
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Error during saving prediction results:", error);
+      throw error;
+    }
+  } catch (error) {
+    console.error("Error during prediction:", error);
+    throw error;
+  }
+};
+
+// const savePredictionResults = async (sortedResults) => {
+//   try {
+//     // Koneksi ke database
+//     const query = "INSERT INTO predicts (id_penerima, prediction) VALUES ?";
+//     const values = sortedResults.map((result) => [
+//       result.recipientId,
+//       result.prediction,
+//     ]);
+
+//     return new Promise((resolve, reject) => {
+//       connection.query(query, [values], (error, results) => {
+//         if (error) {
+//           reject({
+//             message: "Error saving prediction results",
+//             code: 500,
+//             error: error,
+//           });
+//         } else {
+//           resolve(results);
+//         }
+//       });
+//     });
+//   } catch (error) {
+//     console.error("Error during saving prediction results:", error);
+//     throw error;
+//   }
+// };
 
 const fetchAddressFromGoogleMaps = (latitude, longitude) => {
   return new Promise((resolve, reject) => {
@@ -107,9 +294,9 @@ const newDonationIdHandler = async () => {
         if (error) {
           return reject(error);
         }
-        const lastId = results.length ? results[0].id_donasi : "D1";
+        const lastId = results.length ? results[0].id_donasi : "M1";
         const number = parseInt(lastId.substring(1));
-        const newId = `D${number + 1}`;
+        const newId = `M${number + 1}`;
         resolve(newId);
       }
     );
