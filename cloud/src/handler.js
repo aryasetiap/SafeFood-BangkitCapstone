@@ -2,22 +2,19 @@ const Bcrypt = require("bcrypt");
 const mysql = require("mysql");
 const authorizeUser = require("./authentications");
 const jwt = require("jsonwebtoken");
+const { loadModel } = require("./model_utils");
+
+const model = loadModel()
 
 const connection = mysql.createConnection({
-  host: "34.101.229.68",
-  user: "root",
+  host: "192.168.1.8",
+  user: "zain",
   database: "safefood",
-  password: "bob123",
+  password: "zain",
   waitForConnections: true,
-  connectionLimit: 5,
+  connectionLimit: 3,
   queueLimit: 0,
 });
-
-let model;
-
-const initializeModel = (loadedModel) => {
-  model = loadedModel;
-};
 
 const predictWithModel = async (encodedData) => {
   if (!model) {
@@ -1079,6 +1076,8 @@ const deleteDonationsHandler = async (request, h) => {
 };
 
 module.exports = {
+  connection,
+  predictWithModel,
   registerRecipientHandler,
   registerDonorHandler,
   loginUserHandler,
