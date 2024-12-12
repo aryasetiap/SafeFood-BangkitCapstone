@@ -27,5 +27,7 @@ Food waste that is unused or still fit for consumption is often discarded, despi
 
 ## Tech Stack
 **Mobile Development:** Retrofit, Android SDk, Android Studio, CameraX 
+
 **Cloud Computing:** Hapi.js, Compute Engine, Cloud SQL, Cloud Storage, Postman
+
 **Machine Learning:** Python, Tensorflow, Pandas, Matplotlib, NumPy, Sklearn
