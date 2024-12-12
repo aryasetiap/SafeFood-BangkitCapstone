@@ -16,6 +16,7 @@ const {
   updateDonationsHandler,
   deleteDonationsHandler,
   predict,
+  loadModel,
 } = require("./handler");
 
 const routes = [
@@ -26,6 +27,11 @@ const routes = [
   },
   {
     method: "POST",
+    path: "/loadModel",
+    handler: loadModel,
+  },
+  {
+    method: "GET",
     path: "/loadModel",
     handler: loadModel,
   },

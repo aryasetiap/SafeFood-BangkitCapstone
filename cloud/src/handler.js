@@ -26,10 +26,6 @@ async function loadModel() {
   }
 }
 
-const test = () => {
-  return loadModel();
-};
-
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const toRadians = (degrees) => (degrees * Math.PI) / 180;
   const R = 6371; // Radius bumi dalam kilometer
@@ -1286,4 +1282,5 @@ module.exports = {
   updateDonationsHandler,
   deleteDonationsHandler,
   predict,
+  loadModel,
 };
