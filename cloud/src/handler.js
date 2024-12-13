@@ -7,15 +7,23 @@ const { loadModel } = require("./model_utils");
 const model = loadModel()
 
 const connection = mysql.createConnection({
+<<<<<<< HEAD
   host: "192.168.1.8",
   user: "zain",
   database: "safefood",
   password: "zain",
+=======
+  host: "34.128.98.202",
+  user: "root",
+  database: "safefood",
+  password: "safefood123",
+>>>>>>> 62715fad9ed18da6008791a245cf17ebeb4c84ef
   waitForConnections: true,
   connectionLimit: 3,
   queueLimit: 0,
 });
 
+<<<<<<< HEAD
 const predictWithModel = async (encodedData) => {
   if (!model) {
     throw new Error(
@@ -62,6 +70,8 @@ const fetchAddressFromGoogleMaps = (latitude, longitude) => {
   });
 };
 
+=======
+>>>>>>> 62715fad9ed18da6008791a245cf17ebeb4c84ef
 const newRecipientIdHandler = async () => {
   return new Promise((resolve, reject) => {
     connection.query(
@@ -104,9 +114,9 @@ const newDonationIdHandler = async () => {
         if (error) {
           return reject(error);
         }
-        const lastId = results.length ? results[0].id_donasi : "D1";
+        const lastId = results.length ? results[0].id_donasi : "M1";
         const number = parseInt(lastId.substring(1));
-        const newId = `D${number + 1}`;
+        const newId = `M${number + 1}`;
         resolve(newId);
       }
     );
@@ -252,7 +262,7 @@ const registerDonorHandler = async (request, h) => {
 
     const password_penyumbang = await hashPass(password);
     const queryDonor =
-      "INSERT INTO donors (id_penyumbang, nama_penyumbang, kontak_penyumbang, email_penyumbang, username_penyumbang, password_penyumbang, role) VALUES (?, ?, ?, ?, ?);";
+      "INSERT INTO donors (id_penyumbang, nama_penyumbang, kontak_penyumbang, email_penyumbang, username_penyumbang, password_penyumbang, role) VALUES (?, ?, ?, ?, ?, ?, ?);";
     await connection.query(queryDonor, [
       id_penyumbang,
       nama_penyumbang,
@@ -764,25 +774,17 @@ const createDonationsHandler = async (request, h) => {
   try {
     const {
       id_penyumbang, // This should be obtained from the authenticated donor FK from tables donors
-      id_penerima, // This should be provided in the request or obtained from context FK from tables recipients
       makanan_disumbangkan,
       jumlah_disumbangkan,
       kondisi_makanan,
-      status_donasi,
       is_halal_makanan,
       is_for_child_makanan,
       is_for_elderly_makanan,
       is_alergan_makanan,
-      jarak,
-      waktu_donasi,
       tanggal_kadaluarsa,
       lokasi_lat_makanan,
       lokasi_lon_makanan,
-      alamat_penerima,
-      deskripsi_makanan,
-      foto_makanan,
-      penilaian_penerima, // This will be filled by the recipient later
-      ulasan, // This will be filled by the recipient later
+      role,
     } = request.payload;
 
     if (role !== "donor") {
@@ -831,32 +833,36 @@ const createDonationsHandler = async (request, h) => {
     }
 
     const id_donasi = await newDonationIdHandler();
+    const waktu_donasi = new Date();
 
     const newDonationQuery =
-      "INSERT INTO donations (id_donasi, id_penyumbang, id_penerima, makanan_disumbangkan, jumlah_disumbangkan, kondisi_makanan, status_donasi, is_halal_makanan, is_for_child_makanan, is_for_elderly_makanan, is_alergan_makanan, jarak, waktu_donasi,  tanggal_kadaluarsa, lokasi_lat_makanan, lokasi_lon_makanan, alamat_penerima, deskripsi_makanan, foto_makanan, penilaian_penerima, ulasan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      "INSERT INTO donations (id_donasi, id_penyumbang, makanan_disumbangkan, jumlah_disumbangkan, kondisi_makanan, is_halal_makanan, is_for_child_makanan, is_for_elderly_makanan, is_alergan_makanan, waktu_donasi,  tanggal_kadaluarsa, lokasi_lat_makanan, lokasi_lon_makanan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     await connection.query(newDonationQuery, [
       id_donasi,
       id_penyumbang,
-      id_penerima,
       makanan_disumbangkan,
       jumlah_disumbangkan,
       kondisi_makanan,
-      status_donasi,
       is_halal_makanan,
       is_for_child_makanan,
       is_for_elderly_makanan,
       is_alergan_makanan,
-      jarak,
       waktu_donasi,
       tanggal_kadaluarsa,
       lokasi_lat_makanan,
       lokasi_lon_makanan,
-      alamat_penerima,
-      deskripsi_makanan,
-      foto_makanan,
-      penilaian_penerima, // Initially can be null or a default value
-      ulasan, // Initially can be empty or null
     ]);
+
+    try {
+      const response = await fetch("http://34.128.106.96:3000/predict/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.error("Error calling predict function:", error);
+    }
 
     const response = h.response({
       status: "success",
@@ -1075,6 +1081,55 @@ const deleteDonationsHandler = async (request, h) => {
   }
 };
 
+const deletePreviousPredictionsHandler = async (request, h) => {
+  const { status_donasi } = request.payload;
+
+  if (status_donasi !== "Selesai") {
+    const response = h.response({
+      status: "fail",
+      message: "Invalid. Donation not done",
+    });
+    response.code(403);
+    return response;
+  }
+
+  try {
+    const deletePrediction = await new Promise((resolve, reject) => {
+      connection.query("TRUNCATE TABLE predictions;", (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    if (deletePrediction.affectedRows === 0) {
+      const response = h.response({
+        status: "fail",
+        message: "Predictions is already empty",
+      });
+      response.code(404);
+      return response;
+    }
+
+    const response = h.response({
+      status: "success",
+      message: "Predictions data deleted Successfully",
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "error",
+      message: "Prediction table deletion failed",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
 module.exports = {
   connection,
   predictWithModel,
@@ -1094,4 +1149,5 @@ module.exports = {
   getDonationByIdHandler,
   updateDonationsHandler,
   deleteDonationsHandler,
+  deletePreviousPredictionsHandler,
 };
