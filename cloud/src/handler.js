@@ -4,11 +4,7 @@ const authorizeUser = require("./authentications");
 const jwt = require("jsonwebtoken");
 
 const connection = mysql.createConnection({
-<<<<<<< HEAD
-  host: "10.8.0.3",
-=======
   host: "34.128.98.202",
->>>>>>> b60f1da5667a26c9b589713be5cbe8144e70b621
   user: "root",
   database: "safefood",
   password: "safefood123",
@@ -17,59 +13,6 @@ const connection = mysql.createConnection({
   queueLimit: 0,
 });
 
-<<<<<<< HEAD
-const initializeModel = (loadedModel) => {
-  model = loadedModel;
-};
-
-const predictWithModel = async (encodedData) => {
-  if (!model) {
-    throw new Error(
-      "Model belum dimuat. Pastikan server memuat model sebelum memproses prediksi."
-    );
-  }
-
-  try {
-    const tf = require("@tensorflow/tfjs-node");
-    const inputTensor = tf.tensor(encodedData);
-    const predictions = model.predict(inputTensor);
-    return predictions.array(); // Hasil prediksi sebagai array
-  } catch (error) {
-    console.error("Error during prediction:", error);
-    throw new Error("Gagal melakukan prediksi dengan model AI.");
-  }
-};
-
-const fetchAddressFromGoogleMaps = (latitude, longitude) => {
-  return new Promise((resolve, reject) => {
-    const apiKey = "AIzaSyB22I3G0_XORCGf3KRbo_Sgaf6YLSrdj84";
-    const url = `http://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
-
-    http
-      .get(url, (res) => {
-        let data = "";
-
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-
-        res.on("end", () => {
-          try {
-            const result = JSON.parse(data);
-            resolve(result);
-          } catch (error) {
-            reject(error);
-          }
-        });
-      })
-      .on("error", (err) => {
-        reject(err);
-      });
-  });
-};
-
-=======
->>>>>>> b60f1da5667a26c9b589713be5cbe8144e70b621
 const newRecipientIdHandler = async () => {
   return new Promise((resolve, reject) => {
     connection.query(
@@ -852,7 +795,7 @@ const createDonationsHandler = async (request, h) => {
     ]);
 
     try {
-      const response = await fetch("http://localhost:5000/predict", {
+      const response = await fetch("http://34.128.106.96:3000/predict/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
