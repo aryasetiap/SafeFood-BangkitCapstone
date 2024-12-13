@@ -6,10 +6,10 @@ const http = require("http");
 let model;
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "zain",
+  host: "10.8.0.3",
+  user: "root",
   database: "safefood",
-  password: "zain",
+  password: "safefood123",
   waitForConnections: true,
   connectionLimit: 1,
   queueLimit: 0,
@@ -21,7 +21,9 @@ const initializeModel = (loadedModel) => {
 
 const predictWithModel = async (encodedData) => {
   if (!model) {
-    throw new Error("Model belum dimuat. Pastikan server memuat model sebelum memproses prediksi.");
+    throw new Error(
+      "Model belum dimuat. Pastikan server memuat model sebelum memproses prediksi."
+    );
   }
 
   try {
@@ -40,24 +42,26 @@ const fetchAddressFromGoogleMaps = (latitude, longitude) => {
     const apiKey = "AIzaSyB22I3G0_XORCGf3KRbo_Sgaf6YLSrdj84";
     const url = `http://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
 
-    http.get(url, (res) => {
-      let data = "";
+    http
+      .get(url, (res) => {
+        let data = "";
 
-      res.on("data", (chunk) => {
-        data += chunk;
-      });
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
 
-      res.on("end", () => {
-        try {
-          const result = JSON.parse(data);
-          resolve(result);
-        } catch (error) {
-          reject(error);
-        }
+        res.on("end", () => {
+          try {
+            const result = JSON.parse(data);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      })
+      .on("error", (err) => {
+        reject(err);
       });
-    }).on("error", (err) => {
-      reject(err);
-    });
   });
 };
 
