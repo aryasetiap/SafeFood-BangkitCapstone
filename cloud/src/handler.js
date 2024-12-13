@@ -794,6 +794,17 @@ const createDonationsHandler = async (request, h) => {
       lokasi_lon_makanan,
     ]);
 
+    try {
+      const response = await fetch("http://localhost:5000/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.error("Error calling predict function:", error);
+    }
+
     const response = h.response({
       status: "success",
       message: "Donasi berhasil ditambahkan",
@@ -1011,6 +1022,55 @@ const deleteDonationsHandler = async (request, h) => {
   }
 };
 
+const deletePreviousPredictionsHandler = async (request, h) => {
+  const { status_donasi } = request.payload;
+
+  if (status_donasi !== "Selesai") {
+    const response = h.response({
+      status: "fail",
+      message: "Invalid. Donation not done",
+    });
+    response.code(403);
+    return response;
+  }
+
+  try {
+    const deletePrediction = await new Promise((resolve, reject) => {
+      connection.query("TRUNCATE TABLE predictions;", (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    if (deletePrediction.affectedRows === 0) {
+      const response = h.response({
+        status: "fail",
+        message: "Predictions is already empty",
+      });
+      response.code(404);
+      return response;
+    }
+
+    const response = h.response({
+      status: "success",
+      message: "Predictions data deleted Successfully",
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error(error);
+    const response = h.response({
+      status: "error",
+      message: "Prediction table deletion failed",
+    });
+    response.code(500);
+    return response;
+  }
+};
+
 module.exports = {
   registerRecipientHandler,
   registerDonorHandler,
@@ -1028,4 +1088,5 @@ module.exports = {
   getDonationByIdHandler,
   updateDonationsHandler,
   deleteDonationsHandler,
+  deletePreviousPredictionsHandler,
 };
