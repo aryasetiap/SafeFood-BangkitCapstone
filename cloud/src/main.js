@@ -7,11 +7,9 @@ const { response } = require("express");
 // const handler = require("./handler"); // Import handler.js
 
 // Muat model AI saat server dimulai
-<<<<<<<< HEAD:cloud/src/main.js
-========
 let model;
 
->>>>>>>> 62715fad9ed18da6008791a245cf17ebeb4c84ef:cloud/backup/main.js
+
 const initializeModel = async () => {
   try {
     model = await loadModel();
@@ -37,11 +35,8 @@ const process_data = async (req, res) => {
     const [idRecipientList, encodedData] = preprocessData(recipients, makanan);
 
     // Prediksi menggunakan model dari handler.js
-<<<<<<<< HEAD:cloud/src/main.js
-    const predictions = predictWithModel(encodedData);
-========
+
     const predictions = await handler.getPredictionsFromModel(encodedData);
->>>>>>>> 62715fad9ed18da6008791a245cf17ebeb4c84ef:cloud/backup/main.js
 
     // Gabungkan hasil prediksi
     const combinedResults = idRecipientList.map((id, index) => ({
@@ -62,11 +57,7 @@ const process_data = async (req, res) => {
   } catch (error) {
     console.error("Error processing data:", error);
     res.status(500).json({ status: "error", message: error.message });
-  }
-<<<<<<<< HEAD:cloud/src/main.js
+  };
 };
 
 module.exports = { process_data, initializeModel };
-========
-});
->>>>>>>> 62715fad9ed18da6008791a245cf17ebeb4c84ef:cloud/backup/main.js
