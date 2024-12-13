@@ -15,6 +15,7 @@ const {
   getDonationByIdHandler,
   updateDonationsHandler,
   deleteDonationsHandler,
+  deletePreviousPredictionsHandler,
 } = require("./handler");
 
 const routes = [
@@ -97,6 +98,11 @@ const routes = [
     method: "DELETE",
     path: "/donations/{id_donasi}",
     handler: deleteDonationsHandler,
+  },
+  {
+    method: "DELETE",
+    path: "/predictions",
+    handler: deletePreviousPredictionsHandler,
   },
 ];
 

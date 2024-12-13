@@ -1,7 +1,7 @@
 {
   "name": "src",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node ./server.js",
     "start-dev": "nodemon ./server.js"
@@ -12,7 +12,6 @@
   "description": "",
   "dependencies": {
     "@hapi/hapi": "^21.3.12",
-    "@tensorflow/tfjs": "^4.22.0",
     "bcrypt": "^5.1.1",
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
