@@ -1,9 +1,9 @@
 const mysql = require("mysql2/promise");
 const connection = mysql.createConnection({
-  host: "34.128.98.202",
+  host: "IP_ADDRESS_DATABASE",
   user: "root",
-  database: "safefood",
-  password: "safefood123",
+  database: "DATABASE_NAME",
+  password: "root_password",
   waitForConnections: true,
   connectionLimit: 1,
   queueLimit: 0,
