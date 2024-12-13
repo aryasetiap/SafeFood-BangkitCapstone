@@ -7,17 +7,10 @@ const { loadModel } = require("./model_utils");
 const model = loadModel()
 
 const connection = mysql.createConnection({
-<<<<<<< HEAD
-  host: "192.168.1.8",
-  user: "zain",
-  database: "safefood",
-  password: "zain",
-=======
-  host: "34.128.98.202",
+  host: "IP_ADDRESS_DATABASE",
   user: "root",
-  database: "safefood",
-  password: "safefood123",
->>>>>>> 62715fad9ed18da6008791a245cf17ebeb4c84ef
+  database: "DATABASE_NAME",
+  password: "root_password",
   waitForConnections: true,
   connectionLimit: 3,
   queueLimit: 0,
